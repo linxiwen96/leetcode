@@ -2,3 +2,58 @@
 //are there elements a, b, c in nums such that a + b + c = 0? 
 //Find all unique triplets in the array which gives the sum of zero.
 
+//O(n^2) Time limit exceeded
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        unordered_map<int, vector<vector<int>>> map;
+        vector<vector<int>> result;
+        for (int i = 0; i < nums.size(); i++) {
+            int target = -nums[i];
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                if (map.find(target) != map.end()) {
+                    for (int m = 0; m < map[target].size(); m++) {
+                        if ((map[target][m][0] == i - 1 ||
+                            map[target][m][1] == i - 1) &&
+                            map[target][m][0] < i &&
+                            map[target][m][1] < i) {
+                            vector<int> res {nums[map[target][m][0]],
+                                         nums[map[target][m][1]], nums[i]};
+                            result.push_back(res);
+                        }
+                    }
+                }
+                continue;
+            }
+            if (map.find(target) != map.end()) {
+                for (int m = 0; m < map[target].size(); m++) {
+                    if (map[target][m][0] < i && map[target][m][1] < i) {
+                        vector<int> res {nums[map[target][m][0]],
+                                     nums[map[target][m][1]], nums[i]};
+                        result.push_back(res);
+                    }
+                }
+            }
+            for (int j = i + 1; j < nums.size(); j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+                int comb = nums[i] + nums[j];
+                vector<int> temp;
+                temp.push_back(i);
+                temp.push_back(j);
+                if (map.find(comb) != map.end()) {
+                    map[comb].push_back(temp);
+                }
+                else {
+                    vector<vector<int>> origin;
+                    origin.push_back(temp);
+                    map[comb] = origin;
+                }
+            }
+            
+        }
+        return result;
+    }
+};
