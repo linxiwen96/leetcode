@@ -57,3 +57,44 @@ public:
         return result;
     }
 };
+
+//O(n^2) Succeed
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> result;
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int target = -nums[i];
+            int second = i + 1;
+            int third = nums.size() - 1;
+            int sum = 0;
+            while (second < third) {
+                sum = nums[second] + nums[third];
+                if (sum == target) {
+                    vector<int> res(3);
+                    res[0] = nums[i];
+                    res[1] = nums[second];
+                    res[2] = nums[third];
+                    result.push_back(res);
+                    while (second < third && nums[second] == res[1]) {
+                        second++;
+                    }
+                    while (second < third && nums[third] == res[2]) {
+                        third--;
+                    }
+                }
+                else if (sum < target) {
+                    second++;
+                }
+                else {
+                    third--;
+                }
+            }
+        }
+        return result;
+    }
+};
