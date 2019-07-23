@@ -15,28 +15,42 @@ class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         ListNode* res = new ListNode(0);
-        double sum = 0.0;
-        double multi = 0;
-        while (l1 != NULL) {
-            sum += pow(10, multi) * l1->val;
-            l1 = l1->next;
-            multi++;
-        }
-        multi = 0;
-        while (l2 != NULL) {
-            sum += pow(10, multi) * l2->val;
-            l2 = l2->next;
-            multi++;
-        }
-        double remain = 0;
         ListNode* ptr = res;
-        remain = sum - floor(sum / 10) * 10;
-        ptr->val = remain;
-        while (floor(sum / 10)) {
-            sum = floor(sum / 10);
-            remain = sum - floor(sum / 10) * 10;
-            ptr->next = new ListNode(remain);
+        int add = 0;
+        int sum = l1->val + l2->val;
+        if (sum > 9) {
+            add = 1;
+            sum = sum - 10;
+        }
+        ptr->val = sum;
+        l1 = l1->next;
+        l2 = l2->next;
+        while (l1 or l2) {
+            if (l1 == NULL) {
+                sum = l2->val + add;
+                l2 = l2->next;
+            } 
+            else if (l2 == NULL) {
+                sum = l1->val + add;
+                l1 = l1->next;
+            }
+            else {
+                sum = l1->val + l2->val + add;
+                l1 = l1->next;
+                l2 = l2->next;
+            }
+            if (sum > 9) {
+                add = 1;
+                sum = sum - 10;
+            }
+            else {
+                add = 0;
+            }
+            ptr->next = new ListNode(sum);
             ptr = ptr->next;
+        }
+        if (add) {
+            ptr->next = new ListNode(add);
         }
         return res;
     }
