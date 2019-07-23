@@ -3,3 +3,41 @@
 //The digits are stored in reverse order and each of their nodes contain a single digit. 
 //Add the two numbers and return it as a linked list.
 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* res = new ListNode(0);
+        double sum = 0.0;
+        double multi = 0;
+        while (l1 != NULL) {
+            sum += pow(10, multi) * l1->val;
+            l1 = l1->next;
+            multi++;
+        }
+        multi = 0;
+        while (l2 != NULL) {
+            sum += pow(10, multi) * l2->val;
+            l2 = l2->next;
+            multi++;
+        }
+        double remain = 0;
+        ListNode* ptr = res;
+        remain = sum - floor(sum / 10) * 10;
+        ptr->val = remain;
+        while (floor(sum / 10)) {
+            sum = floor(sum / 10);
+            remain = sum - floor(sum / 10) * 10;
+            ptr->next = new ListNode(remain);
+            ptr = ptr->next;
+        }
+        return res;
+    }
+};
