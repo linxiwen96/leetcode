@@ -13,29 +13,37 @@ class Solution {
 public:
     string getPermutation(int n, int k) {
         string result;
+        string nums = "123456789";
         if (n == 1) {
             result = "1";
             return result;
         }
         vector<int> origin(n);
+        int next_perm = 1;
         for (int i = 1; i <= n; i++) {
-            origin.push_back(i);
+            origin[i - 1] = i;
+            if (i > 1 && i < n) {
+                next_perm *= i;
+            }
         }
-        int next_perm = fac(n - 1);
-        int remain = 0;
         int target = 0;
-        while (next_perm >= 1) {
+        while (origin.size() >= 1) {
             target = k / next_perm;
-            remain = k - (target) * next_perm;
-            if (remain == 0) {
-                result += str(origin[target - 1]);
+            k = k - (target) * next_perm;
+            if (k == 0) {
+                result += nums[origin[target - 1] - 1];
                 origin.erase(origin.begin() + target - 1);
-                for (int i = origin.size() - 1; i <= 0; i--) {
-                    result += str(origin[i]);
+                for (int i = origin.size() - 1; i >= 0; i--) {
+                    result += nums[origin[i] - 1];
                 }
                 return result;
             }
+            else {
+                result += nums[origin[target] - 1];
+                origin.erase(origin.begin() + target);
+                next_perm /= origin.size();
+            }
         }
-        
+        return result;
     }
 };
