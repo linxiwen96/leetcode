@@ -1,2 +1,40 @@
 //Given a string, find the length of the longest substring without repeating characters.
 
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.empty()) {
+            return 0;
+        }
+        unordered_map<char, int> lib;
+        int top = 0;
+        int bottom = 1;
+        int max = 1;
+        int count = 1;
+        int start = 0;
+        lib[s[top]] = top;
+        while (bottom <= s.size() - 1) {
+            if (lib.find(s[bottom]) == lib.end()) {
+                lib[s[bottom]] = bottom;
+                count++;
+            }
+            else {
+                if (count > max) {
+                    max = count;
+                }
+                count = count - lib[s[bottom]] + top;
+                start = lib[s[bottom]] + 1;
+                for (int i = top; i <= lib[s[bottom]]; i++) {
+                    lib.erase(s[i]);
+                }
+                top = start;
+                lib[s[bottom]] = bottom;
+            }
+            bottom++;
+        }
+        if (count > max) {
+            max = count;
+        }
+        return max;
+    }
+};
