@@ -1,0 +1,51 @@
+//Given a string s, find the longest palindromic substring in s. 
+//You may assume that the maximum length of s is 1000.
+
+
+//Expand from central, O(n^2) time complexity
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string palin = "";
+        if (!s.size()) {
+            return palin;
+        }
+        int i = 0;
+        while (i < s.size() - palin.size() / 2) {
+            string temp1 = "";
+            string temp2 = "";
+            if (i < (s.size() - 1) && s[i] == s[i + 1]) {
+                int ptr = i - 1;
+                temp1 = temp1 + s[i] + s[i];
+                while (ptr >= 0 && (2*i-ptr+2) <= s.size()
+                       && s[ptr] == s[2*i-ptr+1]) {
+                    temp1 = s[ptr] + temp1 + s[ptr];
+                    ptr--;
+                }
+            }
+            if (i < (s.size() - 1) && i > 0 &&
+                s[i - 1] == s[i + 1]) {
+                int ptr = i - 2;
+                temp2 = temp2 + s[i - 1] + s[i] + s[i + 1];
+                while (ptr >= 0 && (2*i-ptr+1) <= s.size()
+                       && s[ptr] == s[2*i-ptr]) {
+                    temp2 = s[ptr] + temp2 + s[ptr];
+                    ptr--;
+                }
+            }
+            if (temp1.size() > 0 && temp1.size() > palin.size()) {
+                palin = temp1;
+            }
+            if (temp2.size() > 0 && temp2.size() > palin.size()) {
+                palin = temp2;
+            }
+            i++;
+        }
+        if (palin.size()) {
+            return palin;
+        }
+        else {
+            return s.substr(0,1);
+        }
+    }
+};
