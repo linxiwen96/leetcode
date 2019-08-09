@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        vector<vector<char>> store;
+        for (int i = 0; i < numRows; i++) {
+            vector<char> init;
+            store.push_back(init);
+        }
+        int ptr = 0;
+        // dir == 0 go down
+        // dir == 1 go up
+        int dir = 0;
+        int pre_row = 0;
+        while (ptr != s.size()) {
+            if (ptr == 0) {
+                store[0].push_back(s[ptr]);
+            }
+            else {
+                
+            }
+            
+            
+            
+            ptr++;
+        }
+    }
+};
