@@ -1,0 +1,98 @@
+//Given an array of integers nums sorted in ascending order,
+//find the starting and ending position of a given target value.
+
+//Your algorithm's runtime complexity must be in the order of O(log n).
+
+//If the target is not found in the array, return [-1, -1].
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> result(2, -1);
+        if (nums.empty()) {
+            return result;
+        }
+        bool found_top = false;
+        bool found_end = false;
+        int top = -1;
+        int end = -1;
+        int bound_up = nums.size() - 1;
+        int bound_down = 0;
+        int ptr = (bound_up) / 2;
+        while (!found_top) {
+            if (nums[ptr] < target) {
+                if (ptr == bound_up || nums[ptr + 1] > target) {
+                    return result;
+                }
+                else if (nums[ptr + 1] == target) {
+                    ptr++;
+                }
+                else if (ptr == bound_up - 1 && nums[bound_up] < target) {
+                    return result;
+                }
+                else {
+                    ptr = (ptr + bound_up) / 2;
+                }
+            }
+            else if (nums[ptr] > target) {
+                if (ptr == 0) {
+                    return result;
+                }
+                else {
+                    bound_up = ptr;
+                }
+                ptr = ptr / 2;
+            }
+            else {
+                if (ptr < bound_up) {
+                    bound_up = ptr;
+                }
+                if (ptr == 0 || nums[ptr - 1] < target) {
+                    found_top = true;
+                    top = ptr;
+                }
+                else {
+                    ptr = ptr / 2;
+                }
+            }
+        }
+        ptr = (nums.size() - 1) / 2;
+        while (!found_end) {
+            if (nums[ptr] < target) {
+                if (ptr == nums.size() - 1 || nums[ptr + 1] > target) {
+                    return result;
+                }
+                else if (nums[ptr + 1] == target) {
+                    ptr++;
+                }
+                else {
+                    ptr = (ptr + nums.size() - 1) / 2;
+                }
+            }
+            else if (nums[ptr] > target) {
+                if (ptr == bound_down) {
+                    return result;
+                }
+                ptr = (ptr + bound_down) / 2;
+            }
+            else {
+                if (ptr > bound_down) {
+                    bound_down = ptr;
+                }
+                if (ptr == (nums.size() - 1) || nums[ptr + 1] > target) {
+                    found_end = true;
+                    end = ptr;
+                }
+                else if (nums[ptr + 1] == target) {
+                    ptr++;
+                }
+                else {
+                    ptr = (ptr + nums.size() - 1) / 2;
+                }
+            }
+        }
+        result[0] = top;
+        result[1] = end;
+        return result;
+    }
+};
