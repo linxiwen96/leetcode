@@ -1,0 +1,25 @@
+//Given a collection of intervals, merge all overlapping intervals.
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> result;
+        vector<vector<int>> cpy = intervals;
+        if (intervals.empty()) {
+            return result;
+        }
+        sort(cpy.begin(), cpy.end());
+        vector<int> temp = cpy[0];
+        for (int i = 1; i < int(cpy.size()); i++) {
+            if (cpy[i][0] <= temp[1] && cpy[i][1] > temp[1]) {
+                temp[1] = cpy[i][1];
+            }
+            else if (cpy[i][0] > temp[1]) {
+                result.push_back(temp);
+                temp = cpy[i];
+            }
+        }
+        result.push_back(temp);
+        return result;
+    }
+};
