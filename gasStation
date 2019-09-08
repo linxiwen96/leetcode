@@ -1,0 +1,48 @@
+//There are N gas stations along a circular route,
+// where the amount of gas at station i is gas[i].
+//You have a car with an unlimited gas tank and it 
+// costs cost[i] of gas to travel from station i to its next station (i+1). 
+//You begin the journey with an empty tank at one of the gas stations.
+
+//Return the starting gas station's index if you can travel around the circuit 
+//once in the clockwise direction, otherwise return -1.
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int amount_gas = 0;
+        int amount_cost = 0;
+        for (int i = 0; i < gas.size(); i++) {
+            amount_gas += gas[i];
+            amount_cost += cost[i];
+        }
+        if (amount_gas < amount_cost) {
+            return -1;
+        }
+        for (int i = 0; i < gas.size(); i++) {
+            if (gas[i] >= cost[i]) {
+                amount_gas = gas[i] - cost[i];
+                int ptr = i + 1;
+                bool found = true;
+                while (ptr != i) {
+                    if (ptr == gas.size() && i == 0) {
+                        break;
+                    }
+                    else if (ptr == gas.size()) {
+                        ptr = 0;
+                    }
+                    amount_gas += gas[ptr] - cost[ptr];
+                    if (amount_gas < 0) {
+                        found = false;
+                        break;
+                    }
+                    ptr++;
+                }
+                if (found) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+};
